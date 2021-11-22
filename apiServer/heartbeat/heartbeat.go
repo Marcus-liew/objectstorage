@@ -2,13 +2,13 @@ package heartbeat
 
 import (
 	"math/rand"
+	"objectstorage/rabbitmq"
 	"os"
 	"strconv"
 	"sync"
 	"time"
 )
 
-//第二章 加入函数
 var dataServers = make(map[string]time.Time)
 var mutex sync.Mutex
 
@@ -19,17 +19,16 @@ func ListenHeartbeat() {
 	c := q.Consume()
 	go removeExpiredDataServer()
 	for msg := range c {
-		dataServers, e := strconv.Unquote(string(msg.Body))
+		dataServer, e := strconv.Unquote(string(msg.Body))
 		if e != nil {
 			panic(e)
 		}
 		mutex.Lock()
-		dataServers[dataServers] = time.Now()
+		dataServers[dataServer] = time.Now()
 		mutex.Unlock()
 	}
 }
 
-//第二章 加入函数
 func removeExpiredDataServer() {
 	for {
 		time.Sleep(5 * time.Second)
@@ -43,7 +42,6 @@ func removeExpiredDataServer() {
 	}
 }
 
-//第二章 加入函数
 func GetDataServers() []string {
 	mutex.Lock()
 	defer mutex.Unlock()
@@ -54,7 +52,6 @@ func GetDataServers() []string {
 	return ds
 }
 
-//第二章 加入函数
 func ChooseRandomDataServer() string {
 	ds := GetDataServers()
 	n := len(ds)

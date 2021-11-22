@@ -1,18 +1,16 @@
 package locate
 
 import (
+	"objectstorage/rabbitmq"
 	"os"
 	"strconv"
-	"syscall"
 )
 
-//第二章 加入函数
 func Locate(name string) bool {
 	_, err := os.Stat(name)
 	return !os.IsNotExist(err)
 }
 
-//第二章 加入函数
 func StartLocate() {
 	q := rabbitmq.New(os.Getenv("RABBITMQ_SERVER"))
 	defer q.Close()
@@ -20,7 +18,7 @@ func StartLocate() {
 	c := q.Consume()
 
 	for msg := range c {
-		object, e := strconv.UnquoteChar(string(msg.Body))
+		object, e := strconv.Unquote(string(msg.Body))
 		if e != nil {
 			panic(e)
 		}

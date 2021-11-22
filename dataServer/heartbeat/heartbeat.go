@@ -1,11 +1,11 @@
 package heartbeat
 
 import (
+	"objectstorage/rabbitmq"
 	"os"
 	"time"
 )
 
-//第二章 加入的函数
 func StartHeartbeat() {
 	q := rabbitmq.New(os.Getenv("RABBITMQ_SERVER"))
 	defer q.Close()
