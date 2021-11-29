@@ -1,6 +1,7 @@
 package objects
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("log: call dataServer/objects/Handler")
 	m := r.Method
 	if m == http.MethodPut {
 		put(w, r)
@@ -22,6 +24,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func get(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("log: call dataServer/objects/get")
 	f, e := os.Open(os.Getenv("STORAGE_ROOT") + "/objects/" + strings.Split(r.URL.EscapedPath(), "/")[2])
 	if e != nil {
 		log.Println(e)
@@ -33,6 +36,7 @@ func get(w http.ResponseWriter, r *http.Request) {
 }
 
 func put(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("log: call dataServer/objects/put")
 	f, e := os.Create(os.Getenv("STORAGE_ROOT") + "/objects/" + strings.Split(r.URL.EscapedPath(), "/")[2])
 	if e != nil {
 		log.Println(e)

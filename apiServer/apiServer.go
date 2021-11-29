@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"objectstorage/apiServer/heartbeat"
 	"objectstorage/apiServer/locate"
-	"objectstorage/dataServer/objects"
+	"objectstorage/apiServer/objects"
 	"os"
 )
 
